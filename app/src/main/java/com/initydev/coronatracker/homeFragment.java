@@ -30,11 +30,12 @@ import java.util.Locale;
 
 public class homeFragment extends Fragment {
     CatLoadingView LoadScreen;
-    TextView cases,deaths,recovered;
-    TextView infected_patient,inMildCondition,inCriticalCondition;
-    TextView closed_case_outcome,closed_case_recovered,closed_case_death;
-    TextView mildcondition_percentage,critical_percentage,closed_case_recovered_percentage,closed_case_death_percentage;
+    TextView cases, deaths, recovered;
+    TextView infected_patient, inMildCondition, inCriticalCondition;
+    TextView closed_case_outcome, closed_case_recovered, closed_case_death;
+    TextView mildcondition_percentage, critical_percentage, closed_case_recovered_percentage, closed_case_death_percentage;
     RequestQueue queue;
+
     public homeFragment() {
         // Required empty public constructor
     }
@@ -50,9 +51,9 @@ public class homeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //Global Data Hook
-        cases = view.findViewById(R.id.cases) ;
-        deaths =view.findViewById(R.id.deaths) ;
-        recovered =view.findViewById(R.id.recovered) ;
+        cases = view.findViewById(R.id.cases);
+        deaths = view.findViewById(R.id.deaths);
+        recovered = view.findViewById(R.id.recovered);
         //Active Data Hook
         infected_patient = view.findViewById(R.id.active_case_patient);
         inMildCondition = view.findViewById(R.id.active_case_condition);
@@ -69,11 +70,11 @@ public class homeFragment extends Fragment {
         closed_case_death_percentage = view.findViewById(R.id.closed_case_death_percentage);
 
         InternetCheck check = new InternetCheck();
-        if (check.isInternetOn(getActivity()) == false){
+        if (check.isInternetOn(getActivity()) == false) {
             Toast.makeText(getContext(), "Please Enable Your Internet!", Toast.LENGTH_SHORT).show();
 
 
-        }else {
+        } else {
             queue = Volley.newRequestQueue(getActivity());
             GetGlobalData();
             GetActiveCase();
@@ -83,7 +84,7 @@ public class homeFragment extends Fragment {
 
     private void GetGlobalData() {
         String url = "https://corona.lmao.ninja/all";
-        LoadScreen.show(getFragmentManager(),"");
+        LoadScreen.show(getFragmentManager(), "");
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -109,9 +110,9 @@ public class homeFragment extends Fragment {
         queue.add(request);
     }
 
-    private void GetActiveCase(){
+    private void GetActiveCase() {
         String url = "https://covid19-server.chrismichael.now.sh/api/v1/AllReports";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -126,15 +127,15 @@ public class homeFragment extends Fragment {
                     double Mild_Cond = Double.parseDouble(report.getJSONObject(0).getJSONArray("active_cases").getJSONObject(0).getString("inMidCondition").toString());
                     double Infected_Patient = Double.parseDouble(report.getJSONObject(0).getJSONArray("active_cases").getJSONObject(0).getString("currently_infected_patients").toString());
                     double critical_pat = Double.parseDouble(report.getJSONObject(0).getJSONArray("active_cases").getJSONObject(0).getString("criticalStates").toString());
-                    mildcondition_percentage.setText("  "+ Math.round((Mild_Cond * 100) / Infected_Patient) +"%");
-                    critical_percentage.setText("  "+ Math.round((critical_pat * 100) / Infected_Patient) +"%");
+                    mildcondition_percentage.setText("  " + Math.round((Mild_Cond * 100) / Infected_Patient) + "%");
+                    critical_percentage.setText("  " + Math.round((critical_pat * 100) / Infected_Patient) + "%");
 
                     //Set Closed Case Percentage
                     double closed_case = Double.parseDouble(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("cases_which_had_an_outcome").toString());
                     double recoverd_case = Double.parseDouble(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("recovered").toString());
                     double death_case = Double.parseDouble(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("deaths").toString());
-                   closed_case_recovered_percentage.setText("  "+ Math.round((recoverd_case * 100) / closed_case) +"%");
-                   closed_case_death_percentage.setText("  "+ Math.round((death_case * 100) / closed_case) +"%");
+                    closed_case_recovered_percentage.setText("  " + Math.round((recoverd_case * 100) / closed_case) + "%");
+                    closed_case_death_percentage.setText("  " + Math.round((death_case * 100) / closed_case) + "%");
 
                     //Set text for Closed Cases
                     //String ClosedCases = report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("deaths").toString();
@@ -155,10 +156,12 @@ public class homeFragment extends Fragment {
         });
         queue.add(request);
     }
-    public static String formatNumber(int number){
+
+    public static String formatNumber(int number) {
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(number);
     }
-    public static String formatNumber(String number){
+
+    public static String formatNumber(String number) {
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(Integer.parseInt(number));
     }
 

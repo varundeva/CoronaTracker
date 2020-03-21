@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.country:
                             fragment = new countryFragment();
-                            Toast.makeText(MainActivity.this, "Working On..!", Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.about:
                             fragment = new aboutFragment();
