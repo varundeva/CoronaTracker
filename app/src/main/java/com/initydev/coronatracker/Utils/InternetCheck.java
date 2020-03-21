@@ -1,4 +1,4 @@
-package com.initydev.coronatracker;
+package com.initydev.coronatracker.Utils;
 
 import android.app.Activity;
 import android.content.Context;

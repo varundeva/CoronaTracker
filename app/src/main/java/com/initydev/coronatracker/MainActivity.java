@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.initydev.coronatracker.Fragments.aboutFragment;
+import com.initydev.coronatracker.Fragments.countryFragment;
+import com.initydev.coronatracker.Fragments.homeFragment;
 import com.onesignal.OneSignal;
 
 public class MainActivity extends AppCompatActivity {

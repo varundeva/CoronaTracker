@@ -1,11 +1,9 @@
-package com.initydev.coronatracker;
+package com.initydev.coronatracker.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.initydev.coronatracker.Utils.InternetCheck;
+import com.initydev.coronatracker.R;
 import com.roger.catloadinglibrary.CatLoadingView;
 
 import org.json.JSONArray;

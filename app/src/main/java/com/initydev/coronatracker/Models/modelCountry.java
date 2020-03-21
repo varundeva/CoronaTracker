@@ -1,4 +1,4 @@
-package com.initydev.coronatracker;
+package com.initydev.coronatracker.Models;
 
 public class modelCountry {
    private String country,cases,todayCases,deaths,todayDeaths,recovered,active,critical;

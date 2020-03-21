@@ -1,4 +1,4 @@
-package com.initydev.coronatracker;
+package com.initydev.coronatracker.Fragments;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.initydev.coronatracker.R;
 
 
 public class aboutFragment extends Fragment {

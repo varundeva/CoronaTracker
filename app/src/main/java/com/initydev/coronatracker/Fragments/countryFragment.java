@@ -1,4 +1,4 @@
-package com.initydev.coronatracker;
+package com.initydev.coronatracker.Fragments;
 
 import android.os.Bundle;
 
@@ -24,6 +24,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.initydev.coronatracker.Utils.InternetCheck;
+import com.initydev.coronatracker.R;
+import com.initydev.coronatracker.Adapters.countryAdapter;
+import com.initydev.coronatracker.Models.modelCountry;
 import com.roger.catloadinglibrary.CatLoadingView;
 
 import org.json.JSONArray;
@@ -35,8 +39,8 @@ import java.util.List;
 
 public class countryFragment extends Fragment {
     RecyclerView recyclerView;
-    countryAdapter countryAdapter;
-    List<modelCountry> Countrylist;
+    com.initydev.coronatracker.Adapters.countryAdapter countryAdapter;
+    List<com.initydev.coronatracker.Models.modelCountry> Countrylist;
     modelCountry modelCountry;
     LinearLayoutManager linearLayoutManager;
     CatLoadingView LoadScreen;
