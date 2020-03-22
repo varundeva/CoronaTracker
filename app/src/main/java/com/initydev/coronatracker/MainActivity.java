@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         BottomNavigationView bottomNavView= findViewById(R.id.bottom_navigation);
         bottomNavView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         Fragment fragment = new homeFragment();
@@ -35,6 +36,36 @@ public class MainActivity extends AppCompatActivity {
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.common_toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.shareApk:
+                ShareApk();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void ShareApk() {
+
+        Intent shareintent = new Intent();
+
+        shareintent.setAction(Intent.ACTION_SEND);
+
+        shareintent.putExtra(Intent.EXTRA_TEXT,
+                "Get the latest Update of Corona Virus Spread on \"Corona Tracker\" ! \n\n Download here :\n"
+                        + "https://bit.ly/CoronaTrackerApp \n" + "Or \n"+"https://bit.ly/DownloadCoronaTrackerApp");
+        shareintent.setType("text/plain");
+        startActivity(Intent.createChooser(shareintent, "Share via"));
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -51,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.about:
                             fragment = new aboutFragment();
-                            Toast.makeText(MainActivity.this, "Working On..!", Toast.LENGTH_SHORT).show();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_layout,fragment).commit();

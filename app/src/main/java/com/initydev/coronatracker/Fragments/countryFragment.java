@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +47,7 @@ public class countryFragment extends Fragment {
     CatLoadingView LoadScreen;
 
     private RequestQueue queue;
-
+    public SwipeRefreshLayout swipeRefreshLayout;
     public countryFragment() {
         // Required empty public constructor
     }
@@ -55,6 +56,9 @@ public class countryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_country, container, false);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshGlobalList);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         //Hooks
         recyclerView = view.findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -75,8 +79,21 @@ public class countryFragment extends Fragment {
         } else {
             queue = Volley.newRequestQueue(getActivity());
             getCountryData();
+            onSwipeListenr();
         }
         return view;
+    }
+
+    private void onSwipeListenr() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCountryData();
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
     }
 
     @Override

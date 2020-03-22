@@ -3,6 +3,7 @@ package com.initydev.coronatracker.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class homeFragment extends Fragment {
     TextView closed_case_outcome, closed_case_recovered, closed_case_death;
     TextView mildcondition_percentage, critical_percentage, closed_case_recovered_percentage, closed_case_death_percentage;
     RequestQueue queue;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     public homeFragment() {
         // Required empty public constructor
@@ -43,13 +45,15 @@ public class homeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         LoadScreen = new CatLoadingView();
         LoadScreen.setCanceledOnTouchOutside(false);
         //LoadScreen.show(getFragmentManager(),"");
 
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshGlobalList);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+
         //Global Data Hook
         cases = view.findViewById(R.id.cases);
         deaths = view.findViewById(R.id.deaths);
@@ -78,8 +82,24 @@ public class homeFragment extends Fragment {
             queue = Volley.newRequestQueue(getActivity());
             GetGlobalData();
             GetActiveCase();
+            onClickListeners();
+
         }
         return view;
+    }
+
+    private void onClickListeners() {
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetGlobalData();
+                GetActiveCase();
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
     }
 
     private void GetGlobalData() {
@@ -143,6 +163,7 @@ public class homeFragment extends Fragment {
                     closed_case_recovered.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("recovered").toString()));
                     closed_case_death.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("deaths").toString()));
                     LoadScreen.dismiss();
+
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), "Something Error..!!", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
