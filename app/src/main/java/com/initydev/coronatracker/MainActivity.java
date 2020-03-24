@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.initydev.coronatracker.Fragments.aboutFragment;
 import com.initydev.coronatracker.Fragments.countryFragment;
@@ -33,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavView= findViewById(R.id.bottom_navigation);
         bottomNavView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
         Fragment fragment = new homeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_layout,fragment).commit();
 
@@ -46,12 +50,14 @@ public class MainActivity extends AppCompatActivity {
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
 
+        //   menuView.findViewById(R.id.action_menu_need_to_hide).setVisibility(View.GONE);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.common_toolbar_menu, menu);
+
         return true;
     }
 
