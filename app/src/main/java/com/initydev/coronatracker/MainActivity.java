@@ -4,8 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,6 +21,10 @@ import com.initydev.coronatracker.Fragments.aboutFragment;
 import com.initydev.coronatracker.Fragments.countryFragment;
 import com.initydev.coronatracker.Fragments.homeFragment;
 import com.onesignal.OneSignal;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private long mBackPressed;

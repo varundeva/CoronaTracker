@@ -1,31 +1,27 @@
 package com.initydev.coronatracker.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.initydev.coronatracker.Utils.InternetCheck;
 import com.initydev.coronatracker.R;
 import com.roger.catloadinglibrary.CatLoadingView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -80,21 +76,23 @@ public class homeFragment extends Fragment {
 
         } else {
             queue = Volley.newRequestQueue(getActivity());
-            GetGlobalData();
-            GetActiveCase();
-            onClickListeners();
+            GetAllCardData();
+            ScreenSwipeDown();
 
+            TelephonyManager telephoneManager = (TelephonyManager)getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            String countryCode = telephoneManager.getNetworkCountryIso();
+            Locale loc = new Locale("",countryCode);
+            String Country = loc.getDisplayCountry();
         }
         return view;
     }
 
-    private void onClickListeners() {
+    private void ScreenSwipeDown() {
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetGlobalData();
-                GetActiveCase();
+                GetAllCardData();
                 if (swipeRefreshLayout.isRefreshing()) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -102,35 +100,8 @@ public class homeFragment extends Fragment {
         });
     }
 
-    private void GetGlobalData() {
-        String url = "https://corona.lmao.ninja/all";
+    private void GetAllCardData() {
         LoadScreen.show(getFragmentManager(), "");
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                String in = response;
-                try {
-                    JSONObject reader = new JSONObject(in);
-                    cases.setText(formatNumber(reader.getString("cases")));
-                    deaths.setText(formatNumber(reader.getString("deaths")));
-                    recovered.setText(formatNumber(reader.getString("recovered")));
-                } catch (JSONException e) {
-                    Toast.makeText(getActivity(), "Something Error..!!", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "Something Error..!!", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        queue.add(request);
-    }
-
-    private void GetActiveCase() {
         String url = "https://covid19-server.chrismichael.now.sh/api/v1/AllReports";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -138,7 +109,11 @@ public class homeFragment extends Fragment {
                 try {
 
                     JSONArray report = response.getJSONArray("reports");
-                    //String ActiveCases = report.getJSONObject(0).getJSONArray("active_cases").getJSONObject(0).getString("currently_infected_patients").toString();
+                    //Set Global Card
+                    cases.setText(formatNumber(report.getJSONObject(0).getInt("cases")));
+                    deaths.setText(formatNumber(report.getJSONObject(0).getInt("deaths")));
+                    recovered.setText(formatNumber(report.getJSONObject(0).getInt("recovered")));
+
                     //Set Text for Active Case Card
                     infected_patient.setText(formatNumber(report.getJSONObject(0).getJSONArray("active_cases").getJSONObject(0).getString("currently_infected_patients").toString()));
                     inMildCondition.setText(formatNumber(report.getJSONObject(0).getJSONArray("active_cases").getJSONObject(0).getString("inMidCondition").toString()));
@@ -158,7 +133,6 @@ public class homeFragment extends Fragment {
                     closed_case_death_percentage.setText("  " + Math.round((death_case * 100) / closed_case) + "%");
 
                     //Set text for Closed Cases
-                    //String ClosedCases = report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("deaths").toString();
                     closed_case_outcome.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("cases_which_had_an_outcome").toString()));
                     closed_case_recovered.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("recovered").toString()));
                     closed_case_death.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("deaths").toString()));
@@ -181,9 +155,16 @@ public class homeFragment extends Fragment {
     public static String formatNumber(int number) {
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(number);
     }
-
     public static String formatNumber(String number) {
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(Integer.parseInt(number));
     }
+
+
+//    private void GetCountryCard(country){
+//        if(country=="india" || country=="India" || country=="INDIA"){
+//            String url = "https://api.covid19india.org/data.json";
+//
+//        }
+//    }
 
 }
