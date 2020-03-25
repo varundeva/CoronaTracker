@@ -40,6 +40,7 @@ public class aboutFragment extends Fragment {
                 .setDescription(about)
                 .setImage(R.drawable.corona)
                 .addGroup("Connect with us")
+                .addEmail("world4us.in@gmail.com", "Corona Tracker")
                 .addGitHub("varundeva/CoronaTracker")
                 .create();
 

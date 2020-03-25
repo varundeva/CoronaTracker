@@ -24,7 +24,7 @@ import java.util.Locale;
 public class countryAdapter extends RecyclerView.Adapter<countryAdapter.MyViewHolder> implements Filterable {
     private Context mContext;
     private List<modelCountry> list;
-    private List<modelCountry> filteredDataList;;
+    private List<modelCountry> filteredDataList;
 
 
     public countryAdapter(Context mContext, List<modelCountry> list) {

@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
@@ -22,16 +23,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.initydev.coronatracker.Fragments.aboutFragment;
 import com.initydev.coronatracker.Fragments.countryFragment;
 import com.initydev.coronatracker.Fragments.homeFragment;
+import com.initydev.coronatracker.Fragments.statesFragment;
 import com.onesignal.OneSignal;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private long mBackPressed;
     private static final int TIME_INTERVAL = 2000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
 
-        //   menuView.findViewById(R.id.action_menu_need_to_hide).setVisibility(View.GONE);
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,13 +97,19 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.country:
                             fragment = new countryFragment();
                             break;
+                        case R.id.states:
+                            fragment = new statesFragment();
+                            break;
                         case R.id.about:
                             fragment = new aboutFragment();
                             break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_layout,fragment).commit();
                     return true;
                 }
+
             };
     @Override
     public void onBackPressed() {

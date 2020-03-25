@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.initydev.coronatracker.Utils.InternetCheck;
 import com.initydev.coronatracker.R;
 import com.roger.catloadinglibrary.CatLoadingView;
@@ -60,8 +61,11 @@ public class homeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
         LoadScreen = new CatLoadingView();
         LoadScreen.setCanceledOnTouchOutside(false);
         //LoadScreen.show(getFragmentManager(),"");
@@ -114,9 +118,12 @@ public class homeFragment extends Fragment {
             Locale loc = new Locale("", countryCode);
             UserCountry = loc.getDisplayCountry();
             //UserCountry = "China";
+
+
         }
         return view;
     }
+
 
     private void ScreenSwipeDown() {
 
@@ -168,7 +175,7 @@ public class homeFragment extends Fragment {
                     closed_case_outcome.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("cases_which_had_an_outcome").toString()));
                     closed_case_recovered.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("recovered").toString()));
                     closed_case_death.setText(formatNumber(report.getJSONObject(0).getJSONArray("closed_cases").getJSONObject(0).getString("deaths").toString()));
-                    LoadScreen.dismiss();
+
 
                     JSONArray countries = report.getJSONObject(0).getJSONArray("table").getJSONArray(0);
                     for (int i = 0; i < countries.length(); i++) {
@@ -180,7 +187,6 @@ public class homeFragment extends Fragment {
                     //Set Data to Textview
                     _country.setText("My Country " + countryData.getString("Country"));
                     _cases.setText(countryData.getString("TotalCases"));
-                    _cases_today.setText(countryData.getString("NewCases"));
                     _cases_active.setText(countryData.getString("ActiveCases"));
                     _death.setText(countryData.getString("TotalDeaths"));
                     _recovered.setText(countryData.getString("TotalRecovered"));
@@ -191,10 +197,15 @@ public class homeFragment extends Fragment {
                     if (TextUtils.isEmpty(countryData.getString("Serious_Critical"))) {
                         _critical.setText("0");
                     } else _critical.setText(countryData.getString("Serious_Critical"));
+                    if (TextUtils.isEmpty(countryData.getString("NewCases"))) {
+                        _cases_today.setText("0");
+                    } else _cases_today.setText(countryData.getString("NewCases"));
 
+                    LoadScreen.dismiss();
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), "Something Error Inform to Developers", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
+                    GetAllCardData();
                 }
             }
         }, new Response.ErrorListener() {
