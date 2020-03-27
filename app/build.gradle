@@ -37,6 +37,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility = 1.8
+        sourceCompatibility = 1.8
+    }
 
 }
 
@@ -57,5 +61,6 @@ dependencies {
     implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
     implementation 'com.github.medyo:android-about-page:1.2.5'
     implementation 'com.crowdfire.cfalertdialog:cfalertdialog:1.1.0'
+
 
 }

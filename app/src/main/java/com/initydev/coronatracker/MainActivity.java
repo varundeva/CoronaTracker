@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.initydev.coronatracker.Fragments.aboutFragment;
 import com.initydev.coronatracker.Fragments.countryFragment;
 import com.initydev.coronatracker.Fragments.homeFragment;
@@ -51,6 +54,19 @@ public class MainActivity extends AppCompatActivity {
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
+
+        FloatingActionButton fab = findViewById(R.id.bug);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Give Suggestions or Report Bugs", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String subject = "Mail From Corona Tracker";
+                Uri data = Uri.parse("mailto:worldforus.in@gmail.com?subject=" + subject);
+                intent.setData(data);
+                startActivity(intent);
+            }
+        });
 
     }
 

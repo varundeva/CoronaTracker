@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,9 +57,12 @@ public class countryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_country, container, false);
+        //Set Title of Activity
+        getActivity().setTitle("Corona Tracker - Countries");
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshGlobalList);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+
         //Hooks
         recyclerView = view.findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -81,6 +85,8 @@ public class countryFragment extends Fragment {
             getCountryData();
             onSwipeListenr();
         }
+
+
         return view;
     }
 
@@ -119,6 +125,7 @@ public class countryFragment extends Fragment {
                 return false;
             }
         });
+
 
     }
 
@@ -163,5 +170,6 @@ public class countryFragment extends Fragment {
         });
         queue.add(request);
     }
+
 
 }

@@ -1,14 +1,13 @@
 package com.initydev.coronatracker.Fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -34,6 +33,7 @@ import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.initydev.coronatracker.Adapters.stateAdapter;
 import com.initydev.coronatracker.Models.modelState;
 import com.initydev.coronatracker.R;
+import com.initydev.coronatracker.stateClickInterface;
 import com.roger.catloadinglibrary.CatLoadingView;
 
 import org.json.JSONArray;
@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class statesFragment extends Fragment {
+public class statesFragment extends Fragment implements stateClickInterface {
     CatLoadingView LoadScreen;
     String UserCountry;
     RecyclerView recyclerView;
@@ -77,6 +77,7 @@ public class statesFragment extends Fragment {
         Locale loc = new Locale("", countryCode);
         UserCountry = loc.getDisplayCountry();
         queue = Volley.newRequestQueue(getActivity());
+        getActivity().setTitle("Corona Tracker - States");
 
         //Hooks
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -84,7 +85,7 @@ public class statesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         stateList = new ArrayList<>();
-        stateAdapter = new stateAdapter(getContext(), stateList);
+        stateAdapter = new stateAdapter(getContext(), stateList, this);
         recyclerView.setAdapter(stateAdapter);
         if (UserCountry.equalsIgnoreCase("india")) {
             getStateData();
@@ -101,6 +102,7 @@ public class statesFragment extends Fragment {
             builder.show();
             Toast.makeText(getContext(), "States Data Not Available for " + UserCountry, Toast.LENGTH_SHORT).show();
         }
+
         return view;
     }
 
@@ -185,5 +187,23 @@ public class statesFragment extends Fragment {
 
         queue.add(request);
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        String stateName = stateList.get(position).getState();
+        swapFragment(stateName);
+
+    }
+
+    private void swapFragment(String stateName) {
+        Bundle bundle = new Bundle();
+        bundle.putString("state", stateName); // set your parameteres
+
+        districtFragment nextFragment = new districtFragment();
+        nextFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, nextFragment).commit();
     }
 }

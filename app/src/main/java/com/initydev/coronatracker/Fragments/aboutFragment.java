@@ -24,6 +24,8 @@ public class aboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Set Title of Activity
+        getActivity().setTitle("Corona Tracker - About");
         try {
             versionName = getContext().getPackageManager()
                     .getPackageInfo(getContext().getPackageName(), 0).versionName;

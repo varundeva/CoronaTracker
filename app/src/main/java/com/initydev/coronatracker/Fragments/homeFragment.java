@@ -3,9 +3,12 @@ package com.initydev.coronatracker.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,6 +37,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class homeFragment extends Fragment {
+
     public SwipeRefreshLayout swipeRefreshLayout;
     CatLoadingView LoadScreen;
     TextView cases, deaths, recovered;
@@ -44,7 +48,7 @@ public class homeFragment extends Fragment {
     String UserCountry;
     JSONObject countryData;
     RequestQueue queue;
-
+    CardView cardView;
     public homeFragment() {
         // Required empty public constructor
     }
@@ -65,6 +69,8 @@ public class homeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //Set Title of Activity
+        getActivity().setTitle("Corona Tracker - Global");
 
         LoadScreen = new CatLoadingView();
         LoadScreen.setCanceledOnTouchOutside(false);
@@ -102,6 +108,7 @@ public class homeFragment extends Fragment {
         _recovered = view.findViewById(R.id.tv_recovered);
         _critical = view.findViewById(R.id.tv_critical);
 
+        cardView = view.findViewById(R.id.cardView);
 
         InternetCheck check = new InternetCheck();
         if (check.isInternetOn(getActivity()) == false) {
@@ -121,6 +128,16 @@ public class homeFragment extends Fragment {
 
 
         }
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryFragment nextFragment = new countryFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragment_layout, nextFragment).commit();
+            }
+        });
+
         return view;
     }
 
@@ -203,14 +220,23 @@ public class homeFragment extends Fragment {
 
                     LoadScreen.dismiss();
                 } catch (JSONException e) {
+                    LoadScreen.dismiss();
                     Toast.makeText(getActivity(), "Something Error Inform to Developers", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
-                    GetAllCardData();
+
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadScreen.dismiss();
+                        GetAllCardData();
+                    }
+                }, 2000);
                 Toast.makeText(getActivity(), "Something Error in API..!!", Toast.LENGTH_SHORT).show();
             }
         });

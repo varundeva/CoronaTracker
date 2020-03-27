@@ -9,11 +9,13 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.initydev.coronatracker.Models.modelCountry;
 import com.initydev.coronatracker.Models.modelState;
 import com.initydev.coronatracker.R;
+import com.initydev.coronatracker.stateClickInterface;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -24,14 +26,17 @@ public class stateAdapter extends RecyclerView.Adapter<stateAdapter.ViewHolder> 
     private Context mContext;
     private List<modelState> list;
     private List<modelState> filteredDataList;
+    private stateClickInterface stateClickInterface;
 
-    public stateAdapter(Context mContext, List<modelState> list) {
+    //done.
+    public stateAdapter(Context mContext, List<modelState> list, stateClickInterface stateClickInterface) {
         this.mContext = mContext;
         this.list = list;
         this.filteredDataList = list;
+        this.stateClickInterface = stateClickInterface;
+
 
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -101,6 +106,7 @@ public class stateAdapter extends RecyclerView.Adapter<stateAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView state_total_case, state_active_case, state_recoverd_case, state_death_case, state_name;
+        public CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,8 +115,16 @@ public class stateAdapter extends RecyclerView.Adapter<stateAdapter.ViewHolder> 
             state_recoverd_case = itemView.findViewById(R.id.state_recoverd_case);
             state_death_case = itemView.findViewById(R.id.state_death_case);
             state_name = itemView.findViewById(R.id.state_name);
-
+            cardView = itemView.findViewById(R.id.cardView);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    stateClickInterface.onItemClick(getAdapterPosition());
+                }
+            });
         }
+
+
     }
 
 
@@ -121,4 +135,6 @@ public class stateAdapter extends RecyclerView.Adapter<stateAdapter.ViewHolder> 
     public static String formatNumber(String number) {
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(Integer.parseInt(number));
     }
+
+
 }
