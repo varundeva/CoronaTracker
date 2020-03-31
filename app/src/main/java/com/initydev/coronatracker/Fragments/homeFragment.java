@@ -157,6 +157,7 @@ public class homeFragment extends Fragment {
 
     private void GetAllCardData() {
         LoadScreen.show(getFragmentManager(), "");
+        //String url = "https://covidapiforapp.herokuapp.com/api/v1/AllReports";
         String url = "https://covid19-server.chrismichael.now.sh/api/v1/AllReports";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

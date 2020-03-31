@@ -44,6 +44,10 @@ public class aboutFragment extends Fragment {
                 .addGroup("Connect with us")
                 .addEmail("world4us.in@gmail.com", "Corona Tracker")
                 .addGitHub("varundeva/CoronaTracker")
+                .addGroup("Check Out")
+                .addWebsite("https://covindia.herokuapp.com/", "Corona Tracker Web App")
+                .addWebsite("https://covindia.herokuapp.com/policy", "Privacy and Policy")
+
                 .create();
 
 

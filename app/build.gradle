@@ -22,8 +22,8 @@ android {
         applicationId "com.initydev.coronatracker"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 onesignal_app_id               : '7573c1a0-506a-4fec-9f9c-ecb024fbf5ca',
