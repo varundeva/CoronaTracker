@@ -1,6 +1,7 @@
 package com.initydev.coronatracker.Adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 
 public class countryAdapter extends RecyclerView.Adapter<countryAdapter.MyViewHolder> implements Filterable {
@@ -44,10 +44,14 @@ public class countryAdapter extends RecyclerView.Adapter<countryAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder._country.setText("" + filteredDataList.get(position).getCountry());
-
-        String cases = formatNumber(filteredDataList.get(position).getCases());
-        holder._cases.setText(cases);
-
+//        set Total cases
+        if (filteredDataList.get(position).getCases() != "") {
+            String cases = formatNumber(filteredDataList.get(position).getCases());
+            holder._cases.setText(cases);
+        } else {
+            holder._cases.setText("0");
+        }
+        //Set Today's Cases
         String cases_today = formatNumber(filteredDataList.get(position).getTodayCases());
         holder._cases_today.setText(cases_today);
 
@@ -65,6 +69,7 @@ public class countryAdapter extends RecyclerView.Adapter<countryAdapter.MyViewHo
 
         String critical = formatNumber(filteredDataList.get(position).getCritical());
         holder._critical.setText(critical);
+
     }
 
     @Override
@@ -106,8 +111,8 @@ public class countryAdapter extends RecyclerView.Adapter<countryAdapter.MyViewHo
 
                 String searchString = charSequence.toString();
 
-                if (searchString.isEmpty()||searchString == null || searchString.length() == 0) {
-                    filteredDataList=list;
+                if (searchString.isEmpty() || searchString == null || searchString.length() == 0) {
+                    filteredDataList = list;
                 } else {
                     ArrayList<modelCountry> tempFilteredList = new ArrayList<>();
                     for (modelCountry country : list) {
@@ -136,11 +141,15 @@ public class countryAdapter extends RecyclerView.Adapter<countryAdapter.MyViewHo
 
 
     public static String formatNumber(int number) {
+
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(number);
     }
 
     public static String formatNumber(String number) {
-        return NumberFormat.getNumberInstance(Locale.getDefault()).format(Integer.parseInt(number));
+        if (TextUtils.isEmpty(number) || number == "null" || number == null || number == "") {
+            return "0";
+        } else
+            return NumberFormat.getNumberInstance(Locale.getDefault()).format(Integer.parseInt(number));
     }
 }
 

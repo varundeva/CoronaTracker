@@ -141,7 +141,6 @@ public class countryFragment extends Fragment {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String country = jsonObject.getString("cases");
-                        Log.d("Case", String.valueOf(Double.valueOf(country)));
                         modelCountry = new modelCountry(
                                 jsonObject.getString("country"),
                                 jsonObject.getString("cases"),

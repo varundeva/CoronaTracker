@@ -49,6 +49,7 @@ public class homeFragment extends Fragment {
     JSONObject countryData;
     RequestQueue queue;
     CardView cardView;
+
     public homeFragment() {
         // Required empty public constructor
     }
@@ -124,7 +125,8 @@ public class homeFragment extends Fragment {
             String countryCode = telephoneManager.getNetworkCountryIso();
             Locale loc = new Locale("", countryCode);
             UserCountry = loc.getDisplayCountry();
-            //UserCountry = "China";
+            //Toast.makeText(getContext(), UserCountry, Toast.LENGTH_SHORT).show();
+            // UserCountry = "USA";
 
 
         }
