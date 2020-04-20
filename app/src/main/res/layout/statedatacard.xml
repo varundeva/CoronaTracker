@@ -60,7 +60,7 @@
                         android:gravity="center"
                         android:paddingTop="10dp"
                         android:text="X"
-                        android:textColor="#4527A0"
+                        android:textColor="#2196F3"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 

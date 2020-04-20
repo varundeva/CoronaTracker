@@ -42,10 +42,11 @@ public class aboutFragment extends Fragment {
                 .setDescription(about)
                 .setImage(R.drawable.corona)
                 .addGroup("Connect with us")
-                .addEmail("world4us.in@gmail.com", "Corona Tracker")
-                .addGitHub("varundeva/CoronaTracker")
-                .addGroup("Check Out")
                 .addWebsite("https://covindia.herokuapp.com/", "Corona Tracker Web App")
+                .addTwitter("Covid19Stat_bot", "Corona Tracker Twitter Bot")
+                .addGitHub("varundeva/CoronaTracker")
+                .addEmail("world4us.in@gmail.com", "E-Mail Us")
+                .addGroup("Check Out")
                 .addWebsite("https://covindia.herokuapp.com/policy", "Privacy and Policy")
 
                 .create();

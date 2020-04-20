@@ -165,9 +165,7 @@ public class homeFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
                     JSONArray report = response.getJSONArray("reports");
-
                     //Set Global Card
                     cases.setText(formatNumber(report.getJSONObject(0).getInt("cases")));
                     deaths.setText(formatNumber(report.getJSONObject(0).getInt("deaths")));
@@ -229,19 +227,16 @@ public class homeFragment extends Fragment {
 
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        LoadScreen.dismiss();
-                        GetAllCardData();
-                    }
-                }, 2000);
-                Toast.makeText(getActivity(), "Something Error in API..!!", Toast.LENGTH_SHORT).show();
-            }
+        }, error -> {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LoadScreen.dismiss();
+                    GetAllCardData();
+                }
+            }, 2000);
+            Toast.makeText(getActivity(), "Something Error in API..!!", Toast.LENGTH_SHORT).show();
         });
         queue.add(request);
     }
